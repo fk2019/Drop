@@ -15,7 +15,7 @@ class User(BaseModel, Base):
 
         sent_messages = relationship('Post', backref='sender', foreign_keys='Post.sender_id')
         received_messages = relationship('Post', backref='receiver', foreign_keys='Post.receiver_id')
- 
+
     else:
         first_name = ""
         last_name = ""

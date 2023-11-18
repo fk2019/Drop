@@ -17,7 +17,6 @@ def create_users():
     for user in users:
         u = User(**user)
         u.save()
-        time.sleep(2)
         us.append(u)
     return us
 def main():
@@ -28,33 +27,15 @@ def main():
     post3 = {'title': 'History', 'content': 'History is the study of past events, particularly in human affairs and societies.'}
     post4 = {'title': 'Science and Technology', 'content': 'Science is the systematic study of the natural world, and technology refers to the application of scientific knowledge for practical purposes.'}
     users = create_users()
+    print(users)
     #print(users)
-    #f_user = storage._DBStorage__session.query(User).first()
-    f_user = users[0]
-    us2 = users[1]
-    msg = {"content": "Hello", "sender_id": f_user, "receiver_id": us2.id}
-    msg2 = {"content": "Going out?", "sender_id": f_user, "receiver_id": us2.id}
-    msg3 = {"content": "Hi, yeah. When do we meet?", "sender_id": us2.id, "receiver_id": f_user.id}
+    #f_user = users[0]
+    #us2 = users[1]
+    #msg = {"content": "Hello", "sender_id": f_user, "receiver_id": us2.id}
+    #msg2 = {"content": "Going out?", "sender_id": f_user, "receiver_id": us2.id}
+    #msg3 = {"content": "Hi, yeah. When do we meet?", "sender_id": us2.id, "receiver_id": f_user.id}
 
     #print(f_user, us2)
-    f_user.sent_messages.extend([Post(**msg), Post(**msg2)])
-    f_user.save()
-
-    us2.sent_messages.extend([Post(**msg3)])
-    us2.save()
-    sent = f_user.sent_messages
-    rec = us2.sent_messages
-    u = storage.all(User).values()
-    m = sorted(u, key=lambda k:k.updated_at)
-    for us in m:
-        print(us.updated_at)
-
-    printmsg(sent)
-    printmsg(rec)
-def printmsg(msg):
-    for m in msg:
-        print("From {} to {}: {} ({})".format(m.sender.user_name, storage.get(User, m.receiver_id).user_name, m.content, m.updated_at.strftime(ftime)))
-        print(m.updated_at)
-
-
+    #f_user.sent_messages.extend([Post(**msg), Post(**msg2)])
+    #f_user.save()
 main()

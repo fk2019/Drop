@@ -22,11 +22,12 @@ def teardown_db(exception):
 
 @app.errorhandler(404)
 def not_found(error):
-    """Return jasonified error"""
+    """Return jsonified error"""
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 if __name__ == "__main__":
-    host = getenv('HBNB_API_HOST', '0.0.0.0')
-    port = int(getenv('CHAT_PORT', 5005))
-    app.run(debug=True, host=host, port=8000, threaded=True)
+    host = getenv('CHAT_API_HOST', '0.0.0.0')
+    port = int(getenv('CHAT_API_PORT', 5000))
+
+    app.run(debug=True, host=host, port=port, threaded=True)

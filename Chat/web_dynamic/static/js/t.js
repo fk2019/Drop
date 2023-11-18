@@ -1,8 +1,24 @@
-const users = ['User1', 'User2', 'User3'];
+const users = ['Winnie Ryder', 'User2', 'User3'];
+const apiUrl = 'http://127.0.0.1:3000/api/v1/users';
+fetch(apiUrl).then(response => {
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  return response.json();
+}).then((data) => {
+  console.log(data);
+}).catch((er) => {
+  console.log(er);
+});
 const messages = {
-  'User1': ["ghh", "mmh"],
+  'Winnie Ryder': ["Midnight green is a relatively dark, green-bluish color. It’s the official primary color of the Philadelphia Eagles, which is why it’s also sometimes referred to as eagle green.", "mmh"],
   'User2': ["hi", "me too"],
   'User3': ["okay"]
+};
+const avatars = {
+  'Winnie Ryder': '../static/images/avatars/smiling_lady4.png',
+  'User2': '../static/images/avatars/smiling_man.png',
+  'User3': '../static/images/avatars/smiling_lady3.png'
 };
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -11,21 +27,57 @@ document.addEventListener('DOMContentLoaded', function () {
     const typingIndicator = document.getElementById('typing-indicator');
   const messageInput = document.getElementById('message-input');
   const fileInput = document.getElementById('file-input');
+  const header = document.querySelector('.chat-header');
+  const sideBar = document.querySelector('.side-bar');
+  const userPic = document.createElement('div');
+  const userP = document.createElement('p');
+  const userHeader = document.querySelector('.user-header');
+  const socket = io();
+  socket.connect('http:127.0.0.1:5000');
+  function loadUserImage(user, el, userPicDiv, userPar) {
+    const url = avatars[user];
+    const userImage = document.createElement('img');
+    userPicDiv.innerHTML = '';
+    userPar.innerHTML = '';
+    userPicDiv.classList.add('user-pic');
+    userPar.classList.add('user-name');
+    userPicDiv.appendChild(userImage);
+    userImage.src = url;
+    const userName = document.createTextNode(user);
+    userPar.appendChild(userName);
 
+    el.appendChild(userPicDiv);
+    el.appendChild(userPar);
+  }
+
+  function displayHeader(user, el, userPicDiv, userPar) {
+    if (userPicDiv && userPar) {
+      const userDiv = document.createElement('div');
+      loadUserImage(user, userDiv, userPicDiv, userPar);
+      el.appendChild(userDiv);
+    } else {
+      const userPic = document.createElement('div');
+      const userP = document.createElement('p');
+      loadUserImage(user, el, userPic, userP);
+    }
+  }
 
     // Display users
-    users.forEach(user => {
-        const userDiv = document.createElement('div');
-        userDiv.innerText = user;
-        userDiv.addEventListener('click', () => loadMessages(user));
-        usersList.appendChild(userDiv);
-    });
+  users.forEach(user => {
+    const userDiv = document.createElement('div');
+    userDiv.addEventListener('click', () => loadMessages(user));
 
-    // Load initial messages
+    displayHeader(user, userDiv);
+    usersList.appendChild(userDiv);
+  });
+
+
   loadMessages(users[0]);
     // Function to load and display messages for a user
   function loadMessages(user) {
+    userHeader.innerHTML = '';
     messagesContainer.innerHTML = '';
+    displayHeader(user, userHeader, userPic, userP);
     messages[user].forEach(message => {
       displayMessage(message);
     });
@@ -62,8 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     messageDiv.classList.add(messageType === 'sent'? 'sent-message' : 'received-message');
     messagesContainer.appendChild(messageDiv);
-    window.alert(messageDiv);
-
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 
 
@@ -76,26 +127,20 @@ document.addEventListener('DOMContentLoaded', function () {
     if (message !== '') {
       messages[activeUser].push(`You: ${message}`);
       displayMessage(`You: ${message}`, 'sent');
+      socket.emit('message', message);
       messageInput.value = '';
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
       }
 
     const isFile = fileInput.files.length > 0;
     if (isFile) {
       const file = fileInput.files[0];
-      displayMessage('Your file:', 'image', file);
+      displayMessage('', 'image', file);
 
     }
-  //  if (isFile) {
 
-     // url = fileInput.files[0];
-     // displayMessage('Your file:', 'image', url);
-  //    isFile = false:
-   // }
   }
 
-
-
-    // Function to toggle the visibility of the "Send" button based on input field content
   window.toggleSendButton = function () {
     const sendButton = document.getElementById('send-button');
     const messageInput = document.getElementById('message-input');
@@ -107,7 +152,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const isFile = fileInput.files.length > 0;
 
 
-   // ;
     if (isMessage) {
       sendButton.style.display = 'inline-block';
     } else if (isFile) {
@@ -120,9 +164,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
   }
 
-
-    // ... (remaining JavaScript)
-
-
 })
-

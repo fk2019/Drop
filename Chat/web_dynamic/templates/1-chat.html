@@ -1,35 +1,49 @@
 <!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/css/2c.css">
+    <link rel="icon" href="../static/images/avatars/favicon32.jpg">
+        <link rel="icon" href="../static/images/avatars/favicon16.jpg">
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/image.css' rel='stylesheet'>
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/chevron-right.css' rel='stylesheet'>
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/log-out.css' rel='stylesheet'>
     <title>Chat App</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="chat-container">
+      <div class="side-bar">
+	<div class="logo-header">
+	  <img src="../static/images/avatars/chat_logo.jpg">
+	  <p>ChatSphere</p>
+	</div>
         <div class="users-list">
             <!-- User names will be dynamically added here -->
         </div>
-        <div class="chat-area">
-            <div class="messages" id="messages-container">
+      </div>
+      <div class="chat-area">
+	<div class="chat-header">
+	  <div class="user-header"></div>
+	  <div class="header-button"><i class="gg-log-out"></i></div>
+	</div>
+	<div class="messages" id="messages-container">
                 <!-- Messages will be dynamically added here -->
 
-            </div>
-            <div class="typing-indicator" id="typing-indicator"></div>
-            <div class="message-input">
-                <textarea id="message-input" placeholder="Type your message..." oninput='toggleSendButton()'></textarea>
-		<label for="file-input" class="file-label">Choose Pic</label>
-		<input type="file" id="file-input" accept="image/*" onChange='toggleSendButton()'>
+	</div>
+	<div class="typing-indicator" id="typing-indicator"></div>
+	<div class="message-input">
+          <textarea id="message-input" placeholder="Type your message..." oninput='toggleSendButton()'></textarea>
+	  <label for="file-input" class="file-label"><i class="gg-image"></i></label>
+	  <input type="file" id="file-input" accept="image/*" onChange='toggleSendButton()'>
 
-		<button id="send-button" onclick="sendMessage()">Send</button>
-<!--		<button onclick="handleFileUpload()">Upload</button>
-		-->
-            </div>
+	  <button id="send-button" onclick="sendMessage()"><i class="gg-chevron-right"></i></button>
+	</div>
 
-        </div>
+      </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
     <script src="../static/js/t.js"></script>
-</body>
+  </body>
 </html>
