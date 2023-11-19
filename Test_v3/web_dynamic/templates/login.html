@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="../static/css/login.css">
+</head>
+<body>
+
+  <div class="login-container">
+    <form id="loginForm" method="post" action="{{ url_for('auth.login_post') }}">
+      {% with messages = get_flashed_messages() %}
+{% if messages %}
+      <div class="notification is-danger">
+        {{ messages[0] }}
+      </div>
+      {% endif %}
+      {% endwith %}
+      <h2>Login</h2>
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="username" name="username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="password" name="password" required>
+      <label class="checkbox">
+        <input type="checkbox" name="remember">
+        <p>Remember me</p>
+      </label>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script src="../static/js/login.js"></script>
+</body>
+</html>
